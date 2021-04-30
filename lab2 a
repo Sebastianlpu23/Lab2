@@ -1,0 +1,15 @@
+ public static String anarchize(String word) {
+        String temp = word;
+        String output = "";
+        char[] chartab = word.toCharArray();
+
+        for(int i = 0; i < chartab.length; i++) {
+            if(i%2 == 0) {
+                temp += temp.substring(i, chartab.length).toLowerCase() + "\n";
+            }else {
+                temp += temp.substring(i, chartab.length).toUpperCase() + "\n";
+            }
+        }
+
+        return temp;
+    }
