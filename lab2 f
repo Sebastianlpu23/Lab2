@@ -1,133 +1,137 @@
-package pl.lublin.wsei.java.cwiczenia.mylib;
+package pl.lublin.wsei.java.cwiczenia;
 
-import java.util.Random;
+        import java.util.Random;
 
 public class StrongPasswordGenerator {
-    private int dlugosc = 8;
-    private boolean maleLitery = true;
-    private boolean wielkieLitery = true;
+
+    private final String[] wielkieLitery = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "W", "X", "Y", "Z"};
+    private final String[] maleLitery = new String[]{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "w", "x", "y", "z"};
+    private int dlugosc = 4;
+    private boolean stosujMaleLitery = true;
+    private boolean stosujWielkieLitery = true;
     private boolean cyfry = true;
     private boolean znakiSpecjalne = true;
-    private char[] dozwoloZnakiSpecjalne = {
-            '!',
-            '@',
-            '#',
-            '$',
-            '%',
-            '^',
-            '&',
-            '*'
-    };
+    private String dozwoloneZnakiSpecjalne = "!?@#$%";
 
-    public StrongPasswordGenerator(){}
+    StrongPasswordGenerator() {
+    }
 
-    public StrongPasswordGenerator(int dlugosc,
-                                   boolean maleLitery,
-                                   boolean wielkieLitery,
-                                   boolean cyfry,
-                                   boolean znakiSpecjalne,
-                                   char[] dozwoloZnakiSpecjalne){
-
+    StrongPasswordGenerator(int dlugosc) {
         this.dlugosc = dlugosc;
-        this.maleLitery = maleLitery;
-        this.wielkieLitery = wielkieLitery;
+    }
+
+    StrongPasswordGenerator(int dlugosc, boolean maleLitery, boolean wielkieLitery, boolean cyfry, boolean znakiSpecjalne, String dozwoloneZnakiSpecjalne) {
+        this.dlugosc = dlugosc;
+        this.stosujMaleLitery = maleLitery;
+        this.stosujWielkieLitery = wielkieLitery;
         this.cyfry = cyfry;
         this.znakiSpecjalne = znakiSpecjalne;
-        this.dozwoloZnakiSpecjalne = dozwoloZnakiSpecjalne;
+        this.dozwoloneZnakiSpecjalne = dozwoloneZnakiSpecjalne;
     }
 
-    public String generate(){
-        StringBuilder builder = new StringBuilder();
-        Random random = new Random();
+    StrongPasswordGenerator(int dlugosc, String dozwoloneZnakiSpecjalne) {
+        this.dlugosc = dlugosc;
+        this.dozwoloneZnakiSpecjalne = dozwoloneZnakiSpecjalne;
+    }
 
-        do{
-            int funkcja = random.nextInt(4);
 
-            switch(funkcja){
-                case 0:
-                    if(maleLitery){
-                        char c = (char)(random.nextInt(26) + 'a');
-                        builder.append(c);
-                    }
+    public void setMaleLitery(boolean uzyc) {
+        this.stosujMaleLitery = uzyc;
+    }
 
-                    break;
+    public boolean getMaleLitery() {
+        return this.stosujMaleLitery;
+    }
 
-                case 1:
-                    if(wielkieLitery){
-                        char c = (char)(random.nextInt(26) + 'A');
-                        builder.append(c);
-                    }
+    public void setWielkieLitery(boolean uzyc) {
+        this.stosujWielkieLitery = uzyc;
+    }
 
-                    break;
+    public boolean getWielkieLitery() {
+        return this.stosujWielkieLitery;
+    }
 
-                case 2:
-                    if(cyfry){
-                        int intiger = random.nextInt(10);
-                        builder.append(Integer.toString(intiger));
-                    }
+    public void setCyfry(boolean uzyc) {
+        this.cyfry = uzyc;
+    }
 
-                    break;
+    public boolean getCyfry() {
+        return this.cyfry;
+    }
 
-                case 3:
-                    if(znakiSpecjalne){
-                        int index = random.nextInt(dozwoloZnakiSpecjalne.length);
-                        builder.append(dozwoloZnakiSpecjalne[index]);
-                    }
+    public void setZnakiSpecjalne(boolean uzyc, String znaki) {
+        this.znakiSpecjalne = uzyc;
+        this.dozwoloneZnakiSpecjalne = (znaki == null || znaki.length() == 0) ? "!?@#$%?" : znaki;
+    }
 
-                    break;
+    public boolean getZnakiSpecjalne() {
+        return this.znakiSpecjalne;
+    }
+
+
+    private String shuffle(String text) {
+
+        StringBuilder temp = new StringBuilder();
+        text = text.trim();
+        for (int i = 0; i < text.length(); i++) {
+            if (Character.isWhitespace(text.charAt(i))) continue;
+            temp.append(text.charAt(i));
+        }
+        text = temp.toString();
+
+        temp.setLength(0);
+        Random rnd = new Random();
+        int random;
+
+        do {
+            random = rnd.nextInt((text.length()));
+            temp.append(text.charAt(random));
+            text = text.substring(0, random) + text.substring(random + 1);
+        } while (text.length() > 0);
+        return temp.toString();
+    }
+
+    public String generate() {
+        Random rnd = new Random();
+        int queue = 0;
+        boolean didWL = false, didC = false, didZS = false;
+        StringBuilder temp = new StringBuilder();
+        do {
+            if (queue == 0){
+                if (stosujMaleLitery) {
+                    temp.append(maleLitery[rnd.nextInt(maleLitery.length)]);
+                    if (dlugosc == temp.length()) break;
+                }
+                queue = rnd.nextInt(4);
             }
-        }while(builder.length() < dlugosc);
+            if (queue == 1 || !didWL) {
+                if (!didWL) didWL = true;
+                if (stosujWielkieLitery) {
+                    temp.append(wielkieLitery[rnd.nextInt(wielkieLitery.length)]);
+                    if (dlugosc == temp.length()) break;
+                }
+                queue = rnd.nextInt(4);
+            }
+            if (queue == 2 || !didC) {
+                if (!didC) didC = true;
+                if (cyfry) {
+                    temp.append(rnd.nextInt(10));
+                    if (dlugosc == temp.length()) break;
+                }
+                queue = rnd.nextInt(4);
+            }
+            if (queue == 3 || !didZS) {
+                if (!didZS) didZS = true;
+                if (znakiSpecjalne) {
+                    temp.append(dozwoloneZnakiSpecjalne.charAt(rnd.nextInt(dozwoloneZnakiSpecjalne.length())));
+                    if (dlugosc == temp.length()) break;
+                }
+                queue = rnd.nextInt(4);
+            }
+        } while (true);
+        //System.out.println("\n\n Po pierwszych 4 widać poprawność: " + temp.toString() + "\n");
 
-        return builder.toString();
+        return (dlugosc >= 4) ? shuffle(temp.toString()) : "minimalna długość hasła powinna wynosić 4...";
     }
 
-    public void SetDlugosc(int value){
-        dlugosc = value;
-    }
-
-    public int GetDlugosc(){
-        return dlugosc;
-    }
-
-    public void SetMaleLitery(boolean value){
-        maleLitery = value;
-    }
-
-    public boolean GetMaleLitery(){
-        return maleLitery;
-    }
-
-
-    public void SetWielkieLitery(boolean value){
-        wielkieLitery = value;
-    }
-
-    public boolean GetWielkieLitery(){
-        return wielkieLitery;
-
-}
-
-    public void GetCyfry(boolean value){
-        cyfry = value;
-    }
-
-    public boolean GetCyfry(){
-        return cyfry;
-    }
-
-    public void GetZnakiSpecjalne(boolean value){
-        znakiSpecjalne = value;
-    }
-
-    public boolean GetZnakiSpecjalne(){
-        return znakiSpecjalne;
-    }
-
-    public void GetDozwoloZnakiSpecjalne(char[] value){
-        dozwoloZnakiSpecjalne = value;
-    }
-
-    public char[] GetDozwoloZnakiSpecjalne() {
-        return dozwoloZnakiSpecjalne;
-    }
 }
