@@ -1,14 +1,26 @@
-  
-public  static String shuffle (String word){
-        StringBuilder builder = new StringBuilder();
-        Random random = new Random();
+package pl.lublin.wsei.java.cwiczenia;
 
-        for(int i = word.length() - 1; i >= 0; i--){
-            int index = random.nextInt(i);
+import pl.lublin.wsei.java.cwiczenia.mylib.StringFun;
 
-            builder.append(word.charAt(index));
-            word = word.substring(0, index) + word.substring(index + 1);
-        }
-
-        return builder.toString();
+import java.util.Scanner;
+ class ShuffleTest {
+    public static void main(String[] args) {
+        Scanner scn = new Scanner(System.in);
+        do {
+            System.out.print("Podaj tekst do mieszania (0 jak chcesz zakończyc): ");
+            String text = scn.next();
+            text += scn.nextLine();
+            if (text.equals("0")) break;
+            System.out.print("Czy usuwać spacje? (tak/nie): ");
+            String choice = scn.next();
+            choice += scn.nextLine();
+            choice = choice.trim().toLowerCase();
+            if (choice.equals("tak") || choice.equals("nie")) {
+                System.out.println("Result: " + StringFun.shuffle(text, choice) + "\n");
+            } else {
+                System.out.println("Nie poprawny wybór...");
+            }
+        } while (true);
+        scn.close();
     }
+}
