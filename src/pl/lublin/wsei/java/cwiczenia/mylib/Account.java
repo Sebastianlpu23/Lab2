@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Scanner;
 
 public class Account {
-    private String camelize;
+    private String Shuffle;
 
     public static void main() {
         Scanner scanner = new Scanner(System.in);
@@ -12,7 +12,7 @@ public class Account {
         do {
             System.out.print("\nWprowadź tekst: ");
             tekst = scanner.nextLine();
-            System.out.print(StringFun.camelize(tekst));
+            System.out.print(StringFun.Shuffle(tekst));
 
         }while (true);
     }

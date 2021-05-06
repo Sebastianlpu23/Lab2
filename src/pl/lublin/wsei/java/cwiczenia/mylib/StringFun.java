@@ -5,54 +5,28 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Random;
 
 public class StringFun {
-    public static boolean isPalidroneTese(String tekst) {
-        return true;
-    }
 
-    public static String anarchize(String tekst) {
-        StringBuilder builder = new StringBuilder();
+    public static Object Shuffle(String sentence) {
+        Random random = new Random();
 
-        boolean nextCase = Character.isUpperCase(tekst.charAt(0));
-        nextCase = !nextCase;
+        int lenght;
+        int lenght2 = sentence.length();
+        char charSentence[];
+        String shuffledSentence = "";
+        int randomizedNumber;
 
-        builder.append(tekst.charAt(0));
+        for (int i = 0; i < lenght2; i++) {
+            lenght = sentence.length();
+            randomizedNumber = random.nextInt(lenght);
+            if (randomizedNumber == 0) randomizedNumber++;
+            charSentence = sentence.toCharArray();
 
-        for(int i = 1; i < tekst.length(); i++){
-            if (nextCase){
-                builder.append(Character.toUpperCase(tekst.charAt(i)));
-            }else{
-                builder.append(Character.toLowerCase(tekst.charAt(i)));
-            }
-            nextCase = !nextCase;
+            shuffledSentence = shuffledSentence + charSentence[randomizedNumber - 1];
+
+            sentence = sentence.substring(0, randomizedNumber - 1) + sentence.substring(randomizedNumber, lenght);
+
+            return shuffledSentence;
         }
-
-        return builder.toString();
+        return null;
     }
-    public static String camelize(String tekst) {
-        String output = "";
-        String[] words = tekst.split(" ");
-
-        for(int i=0; i < words.length; i++){
-            words[i] = StringUtils.capitalize(words[i]);
-            output = StringUtils.join(words);
-        }
-        return output;
-    }
-
-    public static String shufle(String word){
-
-
-        char[] chartab = word.toCharArray();
-        char[] chartabstring = chartab;
-        Random rnd = new Random();
-        for(int i = 0; i < chartab.length; i++){
-            System.out.println();
-            chartabstring[i] += chartab[rnd.nextInt(chartab.length-1)];
-        }
-        String output = new String(chartabstring);
-        return output;
-    }
-
 }
-    
-    
