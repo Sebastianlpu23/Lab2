@@ -1,0 +1,26 @@
+package pl.lublin.wsei.java.cwiczenia;
+
+import pl.lublin.wsei.java.cwiczenia.mylib.StringFun;
+
+import java.util.Scanner;
+ class ShuffleTest {
+    public static void main(String[] args) {
+        Scanner scn = new Scanner(System.in);
+        do {
+            System.out.print("Podaj tekst do mieszania (0 jak chcesz zakończyc): ");
+            String text = scn.next();
+            text += scn.nextLine();
+            if (text.equals("0")) break;
+            System.out.print("Czy usuwać spacje? (tak/nie): ");
+            String choice = scn.next();
+            choice += scn.nextLine();
+            choice = choice.trim().toLowerCase();
+            if (choice.equals("tak") || choice.equals("nie")) {
+                System.out.println("Result: " + StringFun.shuffle(text, choice) + "\n");
+            } else {
+                System.out.println("Nie poprawny wybór...");
+            }
+        } while (true);
+        scn.close();
+    }
+}

@@ -1,0 +1,45 @@
+ACCOUNT:
+package pl.lublin.wsei.java.cwiczenia.mylib;
+
+import org.apache.commons.lang3.StringUtils;
+import java.util.Scanner;
+
+public class Account {
+    private String decamelize;
+
+    public static void main() {
+        Scanner scanner = new Scanner(System.in);
+        String tekst = null;
+        do {
+            System.out.print("\nWprowadź tekst: ");
+            tekst = scanner.nextLine();
+            System.out.print(StringFun.isPalidroneTese(tekst));
+
+        }while (true);
+    }
+}
+
+
+STRINGFUN:
+
+
+package pl.lublin.wsei.java.cwiczenia.mylib;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Random;
+
+public class StringFun {
+    public static boolean isPalidroneTese(String tekst) {
+        StringBuilder textToCompare = new StringBuilder();
+        tekst = tekst.toLowerCase().trim();
+        for (int i = 0; i < tekst.length(); i++) {
+            if (Character.isWhitespace(tekst.charAt(i))) continue;
+            textToCompare.append(tekst.charAt(i));
+    }
+         return textToCompare.toString().equals(textToCompare.reverse().toString());
+
+    }
+
+
+}
